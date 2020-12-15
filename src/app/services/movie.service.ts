@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 export interface FilterMovie {
   dateStart?: string;
@@ -16,7 +17,7 @@ export interface FilterMovie {
 export class MovieService {
   constructor(private http: HttpClient) {}
 
-  getMovies(filter: FilterMovie) {
+  getMovies(filter: FilterMovie): Observable<any> {
     let url = `${environment.apiBaseUrl}/discover/movie?api_key=${environment.apiKey}&page=${filter.page}`;
     if (filter.sortBy) url += `&sort_by=${filter.sortBy}.${filter.statusSort}`;
     if (filter.dateStart)
@@ -24,7 +25,7 @@ export class MovieService {
     return this.http.get(url);
   }
 
-  getMovie(id: number) {
+  getMovie(id: number): Observable<any> {
     let url = `${environment.apiBaseUrl}/movie/${id}?api_key=${environment.apiKey}`;
     return this.http.get(url);
   }
