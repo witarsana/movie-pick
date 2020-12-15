@@ -1,0 +1,157 @@
+<div *ngIf="!isError" class="wrapper">
+  <div
+    *ngIf="!isLoading"
+    class="jumbotron text-gray-600 h-82 bg-black relative flex flex-col justify-between"
+  >
+    <div class="backdrop flex min-h-0">
+      <img
+        *ngIf="movie && movie.backdrop_path"
+        class="image w-full"
+        loading="lazy"
+        src="{{ baseUrlImage }}{{ movie.backdrop_path }}"
+      />
+    </div>
+
+    <div class="overlay absolute w-full z-50 top-0 left-0 my-10 flex flex-col">
+      <div
+        class="title px-12 text-3xl font-bold rounded-lg opacity-50 text-black bg-white"
+      >
+        <ng-container>{{ movie.title }}</ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="page-content flex flex-col px-10 mb-10">
+    <div class="title-page text-2xl mt-8 text-white">Movie Overview</div>
+    <div
+      *ngIf="!isLoading"
+      class="detail-movie mt-6 flex flex-col xl:flex-row md:flex-row"
+    >
+      <div class="image mb-4">
+        <img
+          *ngIf="movie.poster_path"
+          class="md:w-56 w-full shadow-xl"
+          loading="lazy"
+          src="{{ baseUrlImage }}{{ movie.poster_path }}"
+        />
+        <div
+          *ngIf="!movie.poster_path"
+          class="image w-full bg-gray-1000 flex flex-col text-gray-950 items-center justify-center md:w-48 h-64"
+        >
+          <i class="fas fa-camera text-xl mb-2"></i>
+          <span class="text-sm">No Available Photo</span>
+        </div>
+      </div>
+
+      <div class="description md:mx-4 flex-1 flex-col">
+        <div class="subtitle text-xl text-white">Story Line</div>
+        <div
+          class="Description mt-2 text-sm text-justify font-thin text-gray-500"
+        >
+          {{ movie.overview }}
+        </div>
+        <ul class="mt-2 text-xs font-semibold text-white">
+          <li class="mt-4">
+            <span
+              >{{ movie.popularity | number }}
+              <span
+                class="inline-block mx-2 border-white border-r-2 border-l-2 px-2"
+              >
+                <i class="fas fa-star"></i> {{ movie.vote_average }}
+              </span>
+              {{ movie.vote_count | number }} Reviews</span
+            >
+          </li>
+          <li class="mt-4 flex">
+            <span class="w-20 inline-block">Genre</span>
+            <span class="font-thin flex">
+              <span
+                class="block px-2 bg-red-1100 text-white mr-2 rounded-xl"
+                *ngFor="let genre of movie.genres"
+              >
+                {{ genre.name }}
+              </span>
+            </span>
+          </li>
+          <li class="mt-4">
+            <span class="w-20 inline-block">Released</span
+            ><span class="font-thin">{{
+              movie.release_date | date: "dd MMMM yyyy"
+            }}</span>
+          </li>
+          <li class="mt-4 flex flex-col">
+            <span class="w-20 inline-block">Company</span
+            ><span class="font-thin grid grid-cols-3 gap-1 mt-2">
+              <span
+                class="px-2 text-white mr-2"
+                *ngFor="let company of movie.production_companies"
+              >
+                <i class="far fa-dot-circle"></i> &nbsp; {{ company.name }}
+              </span>
+            </span>
+          </li>
+          <li class="mt-4">
+            <span class="w-20 inline-block">Runtime</span
+            ><span class="font-thin">{{ movie.runtime | time }}</span>
+          </li>
+          <li class="mt-4">
+            <span class="w-20 inline-block">Revenue </span
+            ><span class="font-thin">{{ movie.revenue | currency }}</span>
+          </li>
+
+          <li class="mt-4 flex">
+            <span class="w-20 inline-block">Languages</span>
+            <span class="font-thin flex">
+              <span
+                class="block px-2 bg-gray-1000 text-white mr-2 rounded-xl"
+                *ngFor="let language of movie.spoken_languages"
+              >
+                {{ language.english_name }}
+              </span></span
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="!isLoading" class="action flex mt-6 flex-row">
+      <a
+        routerLink="/home"
+        class="bg-red-1100 cursor-pointer text-white px-10 hover:opacity-50 py-2 rounded-sm text-xs md:text-base font-semibold"
+      >
+        Back To Home
+      </a>
+      <button
+        (click)="addFavorites(movie.id)"
+        class="bg-red-1100 focus:outline-none ml-6 text-white hover:opacity-50 px-10 py-2 rounded-sm text-xs md:text-base font-semibold"
+      >
+        <i class="far fa-heart"></i> Pick to Favorites
+      </button>
+    </div>
+
+    <!-- iloading -->
+    <div *ngIf="isLoading" class="mt-6 flex flex-col xl:flex-row md:flex-row">
+      <div class="image skeleton h-64 mb-4 md:w-56 w-full">
+        <div class="skeleton-text w-full h-full"></div>
+      </div>
+      <div class="md:mx-4 flex-1 flex-col">
+        <div class="subtitle h-10 skeleton">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+        <div class="mt-2 h-48 skeleton">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+      </div>
+    </div>
+    <!-- loading -->
+  </div>
+  <toaster-container></toaster-container>
+</div>
+
+<div
+  *ngIf="isError"
+  class="flex wrapper flex-col px-10 h-full justify-center items-center"
+>
+  <i class="fas fa-exclamation-triangle text-6xl text-gray-950"></i>
+  <span class="mt-4 text-2xl text-gray-950 font-thin"
+    >Oops something when wrong, while trying to load</span
+  >
+</div>

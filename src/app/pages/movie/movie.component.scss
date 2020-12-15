@@ -1,0 +1,28 @@
+.wrapper {
+  font-family: "Poppins", sans-serif;
+  .jumbotron {
+    .backdrop {
+      flex: 1 1 auto;
+
+      img {
+        object-fit: cover;
+      }
+
+      &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: block;
+        content: "";
+        background-image: linear-gradient(
+          to top,
+          black 0%,
+          rgba(0, 0, 0, 0.1) 50%,
+          rgba(0, 0, 0, 0.1) 100%
+        );
+      }
+    }
+  }
+}

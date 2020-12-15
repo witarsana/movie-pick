@@ -1,0 +1,156 @@
+<div class="page-content flex flex-col px-10">
+  <div class="title-page text-2xl mt-12 text-white">Movie List</div>
+  <!-- filter might be around of here -->
+  <div
+    class="advance-option text-sm justify-between flex flex-row items-center mt-5"
+  >
+    <div class="filter-sort flex flex-col md:flex-row md:items-center">
+      <span class="mr-2 text-red-1000">Released Date</span>
+      <div class="filter mr-2">
+        <daterangepicker
+          [class]="'col-md-12 col-lg-12 form-control'"
+          [options]="daterangepickerOptions"
+          (rangeSelected)="rangeSelected($event)"
+        ></daterangepicker>
+      </div>
+      <div class="sort my-2 md:my-0 flex flex-row md:items-center">
+        <span class="mr-2 text-red-1000">Sort By</span>
+        <select
+          (change)="sortByChange($event.target.value)"
+          class="border-none focus:outline-none bg-gray-500 rounded-lg text-gray-990"
+        >
+          <option value="popularity">Popularity</option>
+          <option value="release_date">Release date</option>
+          <option value="vote_count">Vote count</option>
+        </select>
+        <button
+          class="focus:outline-none ml-2 text-white"
+          (click)="toogleSort()"
+        >
+          <i *ngIf="sort === 'asc'" class="fas fa-sort-amount-up"></i>
+          <i *ngIf="sort === 'desc'" class="fas fa-sort-amount-down-alt"></i>
+        </button>
+      </div>
+    </div>
+    <div class="paging flex">
+      <a
+        (click)="prevPage()"
+        class="text-white cursor-pointer px-2 hover:opacity-75"
+        title="Previous Page"
+      >
+        <i *ngIf="page > 1" class="fas fa-chevron-left"></i>
+      </a>
+      <a
+        (click)="nextPage()"
+        class="text-white cursor-pointer px-2 hover:opacity-75"
+        title="Next Page"
+      >
+        <i *ngIf="page <= totalPage" class="fas fa-chevron-right"></i>
+      </a>
+    </div>
+  </div>
+  <div
+    *ngIf="!isLoading"
+    class="content-page my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-5 gap-10"
+  >
+    <ng-container *ngFor="let movie of movies">
+      <div class="card-container mb-10 md:mb-0 cursor-pointer flex flex-col">
+        <div class="popularity text-center z-50">
+          <span
+            class="px-2 bg-yellow-1000 text-white rounded-full text-xs font-bold"
+            ><i class="fas fa-star"></i> {{ movie.vote_average }}</span
+          >
+        </div>
+        <div class="poster shadow-2xl -mt-4 relative">
+          <img
+            *ngIf="movie && movie.poster_path"
+            class="w-full"
+            loading="lazy"
+            src="{{ baseUrlImage }}{{ movie.poster_path }}"
+          />
+          <div
+            *ngIf="!movie.poster_path"
+            class="w-full h-58 bg-gray-1000 flex flex-col text-gray-950 items-center justify-center"
+          >
+            <i class="fas fa-camera text-xl"></i>
+            <span class="text-sm">No Available Photo</span>
+          </div>
+          <div
+            class="cover bg-black w-full h-full absolute top-0 flex justify-center items-center"
+          >
+            <button
+              (click)="showDetail(movie.id)"
+              class="focus:outline-none hover:opacity-75 bg-yellow-1000 text-white px-1 rounded-full"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
+            <button
+              (click)="addFavorites(movie.id)"
+              class="focus:outline-none hover:opacity-75 ml-2 bg-yellow-1000 text-white px-1 rounded-full"
+            >
+              <i class="fas fa-heart"></i>
+            </button>
+          </div>
+        </div>
+        <div
+          class="popularity -mt-4 z-50 text-xs text-white text-center opacity-75 py-1 bg-red-1100 px-1"
+        >
+          {{ movie.popularity | number }}
+        </div>
+        <div class="title text-center mt-2 font-bold text-sm text-red-1100">
+          {{ movie.title }}
+        </div>
+        <div class="genre text-center font-thin text-xs text-gray-400">
+          <ng-container *ngFor="let genre of movie.genres">
+            {{ genre.name }},
+          </ng-container>
+        </div>
+
+        <p class="desc text-xs mt-2 text-justify text-gray-400 font-thin">
+          {{ movie.overview | slice: 0:100 }} ....
+        </p>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- loading -->
+  <ng-container *ngIf="isLoading">
+    <div
+      class="content-page my-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-5 gap-10"
+    >
+      <div
+        *ngFor="let i of ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']"
+        class="mb-10 md:mb-0 cursor-pointer flex flex-col relatif w-full"
+      >
+        <div class="skeleton w-full h-64 relative">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+        <div class="skeleton w-full h-6 rounded-md mt-4 relative">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+        <div class="skeleton w-full h-10 rounded-md mt-4 relative">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <!-- loading end here -->
+  <!-- Error Page -->
+  <div
+    class="flex flex-col h-82 justify-center items-center"
+    *ngIf="isError && !isLoading"
+  >
+    <i class="fas fa-exclamation-triangle text-6xl text-gray-950"></i>
+    <span class="mt-4 text-2xl text-gray-950 font-thin"
+      >Oops something when wrong, while trying to load</span
+    >
+    <button
+      (click)="getList()"
+      class="bg-red-1100 focus:outline-none mt-2 text-white hover:opacity-50 px-10 py-2 rounded-sm text-xs md:text-base"
+    >
+      Try Again
+    </button>
+  </div>
+  <!-- Error end here -->
+  <toaster-container> </toaster-container>
+</div>

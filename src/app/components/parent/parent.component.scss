@@ -1,0 +1,33 @@
+.logo {
+  font-family: "Patua One", cursive;
+}
+.notification {
+  &.hide {
+    display: none;
+  }
+}
+.body {
+  font-family: "Poppins", sans-serif;
+
+  .menu-bar {
+    &.sm {
+      position: fixed;
+      height: 100vh;
+      z-index: 7000;
+      left: -240px;
+      transition: left ease-in-out 0.5s;
+      &.show {
+        left: 0;
+      }
+    }
+
+    ul {
+      li {
+        &.active {
+          @apply text-red-1000;
+          @apply bg-gray-990;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+.page-content {
+  font-family: "Poppins", sans-serif;
+
+  .content-page {
+    .cover {
+      visibility: hidden;
+      transition: visibility 0s, opacity 0.5s linear;
+      opacity: 0;
+    }
+
+    :hover > {
+      .cover {
+        visibility: visible;
+        opacity: 0.7;
+      }
+    }
+  }
+}

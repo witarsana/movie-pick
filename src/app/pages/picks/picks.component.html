@@ -1,0 +1,178 @@
+<div class="page-content flex flex-col px-10">
+  <div class="title-page text-2xl mt-12 text-white">My Pick</div>
+  <ng-container *ngIf="!isLoading && !isError">
+    <ng-container *ngFor="let movie of movies; let i = index">
+      <div class="page-content flex flex-col mb-4">
+        <div class="title-page text-lg mt-8 text-white flex justify-between">
+          <span>
+            {{ movie.title }}
+            <button
+              title="Delete"
+              (click)="delete(i)"
+              class="focus:outline-none hover:opacity-50 text-red-1100 ml-2"
+            >
+              <i class="fas fa-trash-alt"></i></button
+          ></span>
+          <span class="action flex">
+            <button
+              title="Move Up"
+              [disabled]="i == 0"
+              (click)="moveUp(i)"
+              class="focus:outline-none hover:opacity-50"
+            >
+              <i class="fas fa-sort-up"></i>
+            </button>
+            <button
+              [disabled]="i == movies.length - 1"
+              title="Move Down"
+              (click)="moveDown(i)"
+              class="focus:outline-none ml-2 text-yellow-1000 hover:opacity-50"
+            >
+              <i class="fas fa-sort-down"></i>
+            </button>
+          </span>
+        </div>
+        <div class="detail-movie mt-6 flex flex-col xl:flex-row md:flex-row">
+          <div class="image mb-4">
+            <img
+              *ngIf="movie.poster_path"
+              class="md:w-56 w-full shadow-xl"
+              loading="lazy"
+              src="{{ baseUrlImage }}{{ movie.poster_path }}"
+            />
+            <div
+              *ngIf="!movie.poster_path"
+              class="image w-full bg-gray-1000 flex flex-col text-gray-950 items-center justify-center md:w-48 h-64"
+            >
+              <i class="fas fa-camera text-xl mb-2"></i>
+              <span class="text-sm">No Available Photo</span>
+            </div>
+          </div>
+
+          <div class="description md:mx-4 flex-1 flex-col">
+            <div class="subtitle text-xl text-white">Story Line</div>
+            <div
+              class="Description mt-2 text-sm text-justify font-thin text-gray-500"
+            >
+              {{ movie.overview }}
+            </div>
+            <ul class="mt-2 text-xs font-semibold text-white">
+              <li class="mt-4">
+                <span
+                  >{{ movie.popularity | number }}
+                  <span
+                    class="inline-block mx-2 border-white border-r-2 border-l-2 px-2"
+                  >
+                    <i class="fas fa-star"></i> {{ movie.vote_average }}
+                  </span>
+                  {{ movie.vote_count | number }} Reviews</span
+                >
+              </li>
+              <li class="mt-4 flex">
+                <span class="w-20 inline-block">Genre</span>
+                <span class="font-thin flex">
+                  <span
+                    class="block px-2 bg-red-1100 text-white mr-2 rounded-xl"
+                    *ngFor="let genre of movie.genres"
+                  >
+                    {{ genre.name }}
+                  </span>
+                </span>
+              </li>
+              <li class="mt-4">
+                <span class="w-20 inline-block">Released</span
+                ><span class="font-thin">{{
+                  movie.release_date | date: "dd MMMM yyyy"
+                }}</span>
+              </li>
+              <li class="mt-4 flex flex-col">
+                <span class="w-20 inline-block">Company</span
+                ><span class="font-thin grid grid-cols-3 gap-1 mt-2">
+                  <span
+                    class="px-2 text-white mr-2"
+                    *ngFor="let company of movie.production_companies"
+                  >
+                    <i class="far fa-dot-circle"></i> &nbsp; {{ company.name }}
+                  </span>
+                </span>
+              </li>
+              <li class="mt-4">
+                <span class="w-20 inline-block">Runtime</span
+                ><span class="font-thin">{{ movie.runtime | time }}</span>
+              </li>
+              <li class="mt-4">
+                <span class="w-20 inline-block">Revenue </span
+                ><span class="font-thin">{{ movie.revenue | currency }}</span>
+              </li>
+              <li class="mt-4 flex">
+                <span class="w-20 inline-block">Languages</span>
+                <span class="font-thin flex">
+                  <span
+                    class="block px-2 bg-gray-1000 text-white mr-2 rounded-xl"
+                    *ngFor="let language of movie.spoken_languages"
+                  >
+                    {{ language.english_name }}
+                  </span></span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="divider">
+        <div class="line border-b-2 border-gray-800"></div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="isLoading">
+    <div class="mt-6 flex flex-col xl:flex-row md:flex-row">
+      <div class="image skeleton h-64 mb-4 md:w-56 w-full">
+        <div class="skeleton-text w-full h-full"></div>
+      </div>
+      <div class="md:mx-4 flex-1 flex-col">
+        <div class="subtitle h-10 skeleton">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+        <div class="mt-2 h-48 skeleton">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-6 flex flex-col xl:flex-row md:flex-row">
+      <div class="image skeleton h-64 mb-4 md:w-56 w-full">
+        <div class="skeleton-text w-full h-full"></div>
+      </div>
+      <div class="md:mx-4 flex-1 flex-col">
+        <div class="subtitle h-10 skeleton">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+        <div class="mt-2 h-48 skeleton">
+          <div class="skeleton-text w-full h-full"></div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="movies && movies.length == 0">
+    <div class="flex flex-col h-82 justify-center items-center">
+      <i class="fas fa-box-open text-6xl text-gray-950"></i>
+      <span class="mt-4 text-2xl text-gray-950 font-thin"
+        >You still haven't pick something yet</span
+      >
+    </div>
+  </ng-container>
+  <ng-container *ngIf="isError && !isLoading">
+    <div class="flex flex-col h-82 justify-center items-center">
+      <i class="fas fa-exclamation-triangle text-6xl text-gray-950"></i>
+      <span class="mt-4 text-2xl text-gray-950 font-thin"
+        >Oops something when wrong, while trying to load</span
+      >
+      <button
+        (click)="getFavoriteList()"
+        class="bg-red-1100 focus:outline-none mt-2 text-white hover:opacity-50 px-10 py-2 rounded-sm text-xs md:text-base"
+      >
+        Try Again
+      </button>
+    </div>
+  </ng-container>
+  <toaster-container></toaster-container>
+</div>

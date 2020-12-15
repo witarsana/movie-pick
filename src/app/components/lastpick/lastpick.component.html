@@ -1,0 +1,43 @@
+<div class="last-pick text-xs flex flex-col mt-10 text-gray-950">
+  <div class="title font-semibold flex px-8">
+    <span>LAST PICK</span>
+    <span
+      *ngIf="movies && movies.length > 0"
+      class="ml-2 bg-red-1000 px-2 rounded-full"
+      >{{ movies.length }}</span
+    >
+  </div>
+  <ul *ngIf="movies && movies.length > 0" class="mt-2 ml-8 px-0">
+    <ng-container *ngFor="let movie of movies; let i = index">
+      <li *ngIf="i <= 2" class="flex mt-4 text-xxs">
+        <div class="pic flex-none">
+          <div
+            class="image w-12 h-12 rounded-full"
+            [ngStyle]="{
+              'background-image':
+                'url(' + baseUrlImage + movie.poster_path + ')'
+            }"
+          ></div>
+        </div>
+        <div class="description ml-2 flex flex-col">
+          <div class="title pr-1">{{ movie.title }}</div>
+          <div class="date mt-2 text-red-1100">
+            {{ movie.date_pick | date: "y-M-d" }}
+          </div>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+  <div *ngIf="movies.length >= 3" class="mt-4 ml-8">
+    <a class="hover:opacity-75" routerLink="/mypick"
+      >See More <i class="fas fa-chevron-right ml-1"></i
+    ></a>
+  </div>
+  <!-- Empty -->
+  <div
+    *ngIf="movies.length == 0"
+    class="empty ml-8 mt-2 font-thin pr-1 tracking-wide"
+  >
+    You haven't pick something yet, start discover and pick your favorite movie
+  </div>
+</div>

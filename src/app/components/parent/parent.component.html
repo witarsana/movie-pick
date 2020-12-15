@@ -1,0 +1,53 @@
+<div class="wrapper flex flex-col min-h-screen h-screen overflow-y-hidden">
+  <div class="navbar text-gray-100 flex flex-row justify-between h-12">
+    <div
+      class="logo relative text-sm w-full md:w-56 xl:w-56 bg-red-1000 flex justify-center items-center"
+    >
+      <i
+        *ngIf="!isLargeScreen"
+        (click)="toogleMenu()"
+        class="fas fa-bars cursor-pointer menu absolute left-0 ml-4 pointer hover:opacity-75"
+      ></i>
+      <i class="fab fa-get-pocket"></i> &nbsp; Movie Pick
+    </div>
+    <div *ngIf="isLargeScreen" class="notification flex-1 bg-red-1100"></div>
+  </div>
+  <div class="body flex-1 flex flex-row overflow-y-hidden">
+    <div
+      #menubar
+      [ngClass]="isLargeScreen ? '' : 'sm'"
+      class="menu-bar overflow-y-auto w-56 flex-none bg-gray-1000 flex flex-col"
+    >
+      <ul class="mt-10 text-xs font-medium">
+        <li
+          [ngClass]="
+            menu == 'home' ? 'active' : menu == 'movie' ? 'active' : ''
+          "
+          class="h-10 text-gray-950 px-8 flex items-center"
+        >
+          <a (click)="toogleMenu()" class="hover:opacity-75" routerLink="/home"
+            ><i class="fas fa-film"></i> &nbsp; Home</a
+          >
+        </li>
+        <li
+          [ngClass]="menu == 'mypick' ? 'active' : ''"
+          class="h-10 text-gray-950 px-8 flex items-center"
+        >
+          <a
+            (click)="toogleMenu()"
+            class="hover:opacity-75"
+            routerLink="/mypick"
+            ><i class="far fa-heart"></i> &nbsp; My Pick</a
+          >
+        </li>
+      </ul>
+      <div class="divider px-2">
+        <div class="line mt-6 border-b-2 border-gray-800"></div>
+      </div>
+      <app-lastpick></app-lastpick>
+    </div>
+    <div class="content flex-1 bg-gray-990 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
