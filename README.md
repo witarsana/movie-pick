@@ -1,14 +1,23 @@
 # MoviePick
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.4.
+Movie Pick is an application to discover your favorite movies, get the information about a movie, rating, budget etc. You can pick your favorite movie by click "Add favorite button". The list of your favorite movies will saved in your local storage. Yo can re-sort the list
 
-## Development server
+The application access api from  https://www.themoviedb.org
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+![alt text](https://github.com/witarsana/movie-pick/blob/master/image-4.png)
 
-## Code scaffolding
+![alt text](https://github.com/witarsana/movie-pick/blob/master/image-1.png)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+![alt text](https://github.com/witarsana/movie-pick/blob/master/image-2.png)
+
+![alt text](https://github.com/witarsana/movie-pick/blob/master/image-3.png)
+
+## Running the Project On Your Local
+
+1. First clone this project
+2. Change directory into project
+3. Run `npm i` to install the dependencies
+4. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Build
 
@@ -18,10 +27,3 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
