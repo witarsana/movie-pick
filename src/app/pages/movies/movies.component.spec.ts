@@ -1,32 +1,35 @@
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MoviesComponent } from 'src/app/pages/movies/movies.component';
 import { MovieService } from 'src/app/services/movie.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { Router } from '@angular/router';
+
+let mockRouter: any;
+class MockRouter {
+  navigate = jasmine.createSpy('movies');
+}
 
 describe('Movies Component', () => {
-  let component: MoviesComponent;
-  let element: HTMLElement;
-  let fixture: ComponentFixture<MoviesComponent>;
-  let location: Location;
-
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CommonModule],
-      providers: [MovieService, NotificationService, RouterTestingModule],
+      imports: [CommonModule, HttpClientTestingModule],
+      providers: [
+        MovieService,
+        NotificationService,
+        RouterTestingModule,
+
+        { provide: Router, useValue: mockRouter },
+      ],
       declarations: [MoviesComponent],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MoviesComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-        location = TestBed.get(Location);
-      });
+    }).compileComponents();
   });
 
-  //   it('should create', () => {
-  //     expect(component).toBeTruthy();
-  //   });
+  it('should create', () => {
+    const fixture = TestBed.createComponent(MoviesComponent);
+    const component = fixture.componentInstance;
+    expect(component).toBeTruthy();
+  });
 });

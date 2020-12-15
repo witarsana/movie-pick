@@ -1,37 +1,65 @@
 import { CommonModule } from '@angular/common';
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MovieComponent } from 'src/app/pages/movie/movie.component';
 import { MovieService } from 'src/app/services/movie.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { ActivatedRoute, Data, Params, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { MovieComponent } from './movie.component';
+
+let mockRouter: any;
+class MockRouter {
+  navigate = jasmine.createSpy('movie');
+}
 
 describe('Movie Component', () => {
-  let component: MovieComponent;
-  let element: HTMLElement;
-  let fixture: ComponentFixture<MovieComponent>;
-  let location: Location;
-
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CommonModule],
-      providers: [MovieService, NotificationService, RouterTestingModule],
+      imports: [CommonModule, HttpClientTestingModule],
+      providers: [
+        MovieService,
+        NotificationService,
+        RouterTestingModule,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            data: {
+              subscribe: (fn: (value: Data) => void) =>
+                fn({
+                  id: 1,
+                }),
+            },
+            params: {
+              subscribe: (fn: (value: Params) => void) =>
+                fn({
+                  id: 1,
+                }),
+            },
+            snapshot: {
+              url: [
+                {
+                  path: 'foo',
+                },
+                {
+                  path: 'bar',
+                },
+                {
+                  path: 'baz',
+                },
+              ],
+            },
+          },
+        },
+        { provide: Router, useValue: mockRouter },
+      ],
       declarations: [MovieComponent],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MovieComponent);
-        component = fixture.componentInstance;
-        element = fixture.nativeElement;
-        location = TestBed.get(Location);
-      });
+    }).compileComponents();
   });
 
   // it('should create', () => {
+  //   const fixture = TestBed.createComponent(MovieComponent);
+  //   const component = fixture.componentInstance;
   //   expect(component).toBeTruthy();
-  // });
-
-  // it('should create link of menu', () => {
-  //   const el = element.querySelector('.left-menu');
-  //   expect(el.children.length).toBeGreaterThan(0);
   // });
 });
