@@ -16,6 +16,7 @@ import { DatetimerangepickerModule } from 'angular-datetimerangepicker';
 import { ToasterModule } from 'angular2-toaster';
 import { FavoriteService } from './services/favorite.service';
 import { LastpickComponent } from './components/lastpick/lastpick.component';
+import { TestComponent } from './components/test/test.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import { LastpickComponent } from './components/lastpick/lastpick.component';
     ParentComponent,
     TimePipe,
     LastpickComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,
